@@ -359,11 +359,17 @@
             cursor: pointer;
         }
 
-        .hero-title {
-            font-size: clamp(3rem, 7vw, 7rem);
+        .names-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .name-line {
+            font-size: clamp(2.5rem, 5.5vw, 5.5rem);
             font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 30px;
             text-align: center;
             color: white;
             text-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
@@ -371,8 +377,49 @@
             cursor: pointer;
         }
 
-        .hero-title .accent {
+        .name-line .accent {
             color: #ff3333;
+        }
+
+        .name-separator {
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .name-separator.hidden {
+            display: none;
+        }
+
+        .name-line.hidden {
+            display: none;
+        }
+
+        .toggle-name-btn {
+            background: rgba(255, 51, 51, 0.2);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            color: #ff6b6b;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .toggle-name-btn:hover {
+            background: rgba(255, 51, 51, 0.3);
+            border-color: rgba(255, 51, 51, 0.6);
+            transform: scale(1.05);
+        }
+
+        .toggle-name-btn i {
+            margin-right: 8px;
         }
 
         .decoration-line {
@@ -873,35 +920,14 @@
                 height: 140px;
                 font-size: 3.5rem;
             }
-        }
 
-        /* Video placeholder styles */
-        .video-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #2a0505 100%);
-        }
+            .name-line {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+            }
 
-        .video-icon {
-            font-size: 5rem;
-            color: #ff3333;
-            margin-bottom: 20px;
-        }
-
-        .video-text {
-            font-size: 1.8rem;
-            color: white;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .video-subtext {
-            font-size: 1.2rem;
-            color: rgba(255,255,255,0.6);
+            .name-separator {
+                font-size: clamp(1.2rem, 4vw, 2rem);
+            }
         }
     </style>
 </head>
@@ -951,9 +977,18 @@
                             <i class="fas fa-star"></i> WARMLY WELCOME
                         </div>
                         
-                        <h1 class="hero-title" id="heroName" onclick="editElement('heroName', 'NAWAZ SHAIKH')">
-                            NAWAZ <span class="accent">SHAIKH</span>
-                        </h1>
+                        <div class="names-container">
+                            <h1 class="name-line" id="heroName1" onclick="editElement('heroName1', 'NAWAZ SHAIKH')">
+                                NAWAZ <span class="accent">SHAIKH</span>
+                            </h1>
+                            <div class="name-separator" id="nameSeparator">&</div>
+                            <h1 class="name-line" id="heroName2" onclick="editElement('heroName2', 'ZAHID SHAIKH')">
+                                ZAHID <span class="accent">SHAIKH</span>
+                            </h1>
+                        </div>
+                        <button class="toggle-name-btn" onclick="toggleSecondName()">
+                            <i class="fas fa-user-minus"></i> Remove Second Name
+                        </button>
                         
                         <div class="decoration-line"></div>
                         
@@ -998,8 +1033,6 @@
                                 </div>
                                 <p class="entity-name" id="partnerName" onclick="editElement('partnerName', 'PARTNER')">PARTNER</p>
                                 <p class="entity-label" id="partnerLabel" onclick="editElement('partnerLabel', 'Strategic Ally')">Strategic Ally</p>
-                                
-                                
                             </div>
                             
                             <div class="center-connection">
@@ -1103,9 +1136,9 @@
         <!-- Scrolling Banner -->
         <div class="scrolling-banner">
             <div class="scrolling-content" id="scrollingContent">
-                <span class="scrolling-text">✨ WARMLY WELCOME NAWAZ SHAIKH</span>
+                <span class="scrolling-text">✨ WARMLY WELCOME NAWAZ SHAIKH & ZAHID SHAIKH</span>
                 <span class="scrolling-text">🌟 DRAFTOMECH</span>
-                <span class="scrolling-text">✨ WARMLY WELCOME NAWAZ SHAIKH</span>
+                <span class="scrolling-text">✨ WARMLY WELCOME NAWAZ SHAIKH & ZAHID SHAIKH</span>
                 <span class="scrolling-text">🌟 DRAFTOMECH</span>
             </div>
         </div>
@@ -1129,9 +1162,7 @@
         // Check if video exists and handle accordingly
         introVideo.addEventListener('loadeddata', function() {
             console.log('Video loaded successfully');
-            // Video loaded successfully, play it
             introVideo.play().catch(err => {
-                // If autoplay fails, show controls
                 console.log('Autoplay prevented:', err);
             });
         });
@@ -1146,12 +1177,10 @@
         });
 
         introVideo.addEventListener('error', function(e) {
-            // Video not found, start presentation directly
             console.log('Video error:', e);
             startPresentation();
         });
 
-        // When video ends, start presentation
         introVideo.addEventListener('ended', function() {
             console.log('Video ended, starting presentation');
             isVideoPlaying = false;
@@ -1170,7 +1199,6 @@
         function startPresentation() {
             console.log('startPresentation called, presentationStarted:', presentationStarted);
             if (presentationStarted && !isVideoPlaying) {
-                // Already in presentation mode, don't restart
                 return;
             }
             presentationStarted = true;
@@ -1190,15 +1218,12 @@
                 document.querySelector('.curtain-right').classList.add('open');
             }, 500);
 
-            // Start auto-rotation after curtain opens
             setTimeout(() => {
                 startAutoRotate();
             }, 4000);
         }
 
-        // Initialize on load
         window.addEventListener('load', () => {
-            // Create particles for all backgrounds
             document.querySelectorAll('.bg-animation').forEach(bg => {
                 for (let i = 0; i < 25; i++) {
                     const particle = document.createElement('div');
@@ -1227,9 +1252,7 @@
         function nextPage() {
             const next = (currentPage + 1) % pages.length;
             
-            // If we've completed all pages, restart from video
             if (currentPage === pages.length - 1) {
-                // We're on the last page (Thank You), go back to video
                 showVideoAndRestart();
             } else {
                 goToPage(next);
@@ -1239,27 +1262,22 @@
         function showVideoAndRestart() {
             console.log('showVideoAndRestart called');
             
-            // Stop auto-rotation
             clearInterval(autoRotate);
             
-            // Close curtains
             document.querySelector('.curtain-left').classList.remove('open');
             document.querySelector('.curtain-right').classList.remove('open');
             
-            // Go back to first page immediately (behind curtains)
             pages[currentPage].classList.remove('active');
             indicators[currentPage].classList.remove('active');
             currentPage = 0;
             pages[currentPage].classList.add('active');
             indicators[currentPage].classList.add('active');
             
-            // Show video overlay
             videoOverlay.style.display = 'flex';
             setTimeout(() => {
                 videoOverlay.classList.remove('hidden');
             }, 100);
             
-            // Reset and play video
             if (introVideo && !introVideo.error) {
                 introVideo.currentTime = 0;
                 console.log('Attempting to play video from start');
@@ -1273,7 +1291,6 @@
                         presentationStarted = false;
                     }).catch(err => {
                         console.log('Video play failed:', err);
-                        // If can't play video, just restart presentation after delay
                         isVideoPlaying = false;
                         presentationStarted = false;
                         setTimeout(() => {
@@ -1283,7 +1300,6 @@
                 }
             } else {
                 console.log('No video available, restarting presentation');
-                // No video, just restart presentation after delay
                 isVideoPlaying = false;
                 presentationStarted = false;
                 setTimeout(() => {
@@ -1301,7 +1317,6 @@
             startAutoRotate();
         }
 
-        // Edit Function
         function editElement(elementId, defaultValue) {
             const el = document.getElementById(elementId);
             const currentText = el.textContent.trim();
@@ -1329,13 +1344,11 @@
                 el.style.display = originalDisplay;
                 input.remove();
                 
-                // Update scrolling banner if name or company changed
-                if (elementId === 'heroName' || elementId === 'companyLogo') {
+                if (elementId === 'heroName1' || elementId === 'heroName2' || elementId === 'companyLogo') {
                     updateScrollingBanner();
                 }
                 
-                // Update hero title accent
-                if (elementId === 'heroName') {
+                if (elementId === 'heroName1' || elementId === 'heroName2') {
                     const parts = newValue.split(' ');
                     if (parts.length > 1) {
                         const lastName = parts.pop();
@@ -1351,16 +1364,45 @@
         }
 
         function updateScrollingBanner() {
-            const name = document.getElementById('heroName').textContent.toUpperCase();
+            const name1 = document.getElementById('heroName1').textContent.toUpperCase();
+            const name2Element = document.getElementById('heroName2');
             const company = document.getElementById('companyLogo').textContent;
+            
+            let nameText = name1;
+            if (name2Element && !name2Element.classList.contains('hidden')) {
+                const name2 = name2Element.textContent.toUpperCase();
+                nameText = `${name1} & ${name2}`;
+            }
+            
             const content = `
-                <span class="scrolling-text">✨ WARMLY WELCOME ${name}</span>
+                <span class="scrolling-text">✨ WARMLY WELCOME ${nameText}</span>
                 <span class="scrolling-text">🌟 ${company}</span>
             `.repeat(2);
             document.getElementById('scrollingContent').innerHTML = content;
         }
 
-        // Keyboard navigation
+        let isSecondNameVisible = true;
+
+        function toggleSecondName() {
+            const name2 = document.getElementById('heroName2');
+            const separator = document.getElementById('nameSeparator');
+            const btn = document.querySelector('.toggle-name-btn');
+            
+            isSecondNameVisible = !isSecondNameVisible;
+            
+            if (isSecondNameVisible) {
+                name2.classList.remove('hidden');
+                separator.classList.remove('hidden');
+                btn.innerHTML = '<i class="fas fa-user-minus"></i> Remove Second Name';
+            } else {
+                name2.classList.add('hidden');
+                separator.classList.add('hidden');
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Add Second Name';
+            }
+            
+            updateScrollingBanner();
+        }
+
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT') return;
             
@@ -1374,7 +1416,6 @@
             }
         });
 
-        // Logo Upload Function
         let currentLogoTarget = null;
 
         function uploadLogo(logoId) {
@@ -1399,12 +1440,8 @@
                 };
                 reader.readAsDataURL(file);
             }
-            // Reset file input
             e.target.value = '';
         });
     </script>
 </body>
 </html>
-
-
-
