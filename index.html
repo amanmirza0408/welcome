@@ -1365,20 +1365,18 @@
         function toggleSecondName() {
             const name2 = document.getElementById('heroName2');
             const separator = document.getElementById('nameSeparator');
-            const btn = document.querySelector('.toggle-name-btn');
             
             isSecondNameVisible = !isSecondNameVisible;
             
             if (isSecondNameVisible) {
                 name2.classList.remove('hidden');
                 separator.classList.remove('hidden');
-                btn.innerHTML = '<i class="fas fa-user-minus"></i> Remove Second Name';
             } else {
                 name2.classList.add('hidden');
                 separator.classList.add('hidden');
-                btn.innerHTML = '<i class="fas fa-user-plus"></i> Add Second Name';
             }
             
+            // Update the scrolling banner
             updateScrollingBanner();
         }
 
