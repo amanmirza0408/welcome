@@ -357,6 +357,13 @@
             text-transform: uppercase;
             box-shadow: 0 0 20px rgba(255, 51, 51, 0.2);
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-badge:hover {
+            background-color: rgba(255, 51, 51, 0.3);
+            border-color: rgba(255, 51, 51, 0.6);
+            transform: scale(1.05);
         }
 
         .names-container {
@@ -395,31 +402,6 @@
 
         .name-line.hidden {
             display: none;
-        }
-
-        .toggle-name-btn {
-            background: rgba(255, 51, 51, 0.2);
-            border: 1px solid rgba(255, 51, 51, 0.4);
-            color: #ff6b6b;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .toggle-name-btn:hover {
-            background: rgba(255, 51, 51, 0.3);
-            border-color: rgba(255, 51, 51, 0.6);
-            transform: scale(1.05);
-        }
-
-        .toggle-name-btn i {
-            margin-right: 8px;
         }
 
         .decoration-line {
@@ -973,7 +955,7 @@
                 
                 <div class="content-wrapper">
                     <div class="welcome-section">
-                        <div class="welcome-badge" id="welcomeBadge" onclick="editElement('welcomeBadge', 'WARMLY WELCOME')">
+                        <div class="welcome-badge" id="welcomeBadge" onclick="toggleSecondName()">
                             <i class="fas fa-star"></i> WARMLY WELCOME
                         </div>
                         
@@ -986,9 +968,6 @@
                                 ZAHID <span class="accent">SHAIKH</span>
                             </h1>
                         </div>
-                        <button class="toggle-name-btn" onclick="toggleSecondName()">
-                            <i class="fas fa-user-minus"></i> Remove Second Name
-                        </button>
                         
                         <div class="decoration-line"></div>
                         
