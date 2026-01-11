@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Draftomech - Executive Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <style>
         * {
             margin: 0;
@@ -12,10 +14,110 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             overflow: hidden;
             background: #000;
             height: 100vh;
+            width: 100vw;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Video Introduction Overlay */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 20000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+        }
+
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .video-container {
+            width: 90%;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 100px rgba(255, 51, 51, 0.5);
+            border: 3px solid rgba(255, 51, 51, 0.3);
+            position: relative;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2a0505 100%);
+        }
+
+        .video-icon {
+            font-size: 5rem;
+            color: #ff3333;
+            margin-bottom: 20px;
+        }
+
+        .video-text {
+            font-size: 1.8rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .video-subtext {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .video-control-btn {
+            background: rgba(0,0,0,0.7);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-control-btn:hover {
+            background: rgba(255, 51, 51, 0.8);
+            border-color: #ff3333;
         }
 
         /* Curtain Animation */
@@ -73,6 +175,7 @@
         /* Main Container */
         .main-wrapper {
             height: 100vh;
+            width: 100vw;
             position: relative;
             overflow: hidden;
         }
@@ -80,6 +183,7 @@
         /* Pages Container */
         .pages-container {
             height: 100vh;
+            width: 100vw;
             position: relative;
         }
 
@@ -93,27 +197,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
         }
 
         .page.active {
             opacity: 1;
             z-index: 1;
-        }
-
-        /* Page 1 - CEO Welcome */
-        .page-1 {
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-        }
-
-        /* Page 2 - Partnership */
-        .page-2 {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
-        }
-
-        /* Page 3 - Thank You */
-        .page-3 {
-            background: linear-gradient(135deg, #134e5e 0%, #71b280 50%, #00d2ff 100%);
         }
 
         /* Animated Background */
@@ -123,6 +211,55 @@
             height: 100%;
             overflow: hidden;
             z-index: 0;
+        }
+
+        .bg-shape-1 {
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 800px;
+            height: 800px;
+            background-color: #1a1a2e;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-shape-2 {
+            position: absolute;
+            bottom: -200px;
+            right: -100px;
+            width: 900px;
+            height: 900px;
+            background-color: #2a0505;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.7;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .bg-accent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background-color: rgba(255, 51, 51, 0.05);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.08; transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .particle {
@@ -141,12 +278,12 @@
 
         /* Company Logo (Top) */
         .company-logo-top {
-            position: absolute;
+            position: fixed;
             top: 30px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 3em;
-            font-weight: bold;
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            font-weight: 900;
             color: #ff3333;
             text-transform: uppercase;
             letter-spacing: 6px;
@@ -162,32 +299,36 @@
             50% { text-shadow: 0 0 40px rgba(255, 51, 51, 0.8), 0 0 80px rgba(255, 51, 51, 0.6); }
         }
 
-        /* Content Container */
+        /* Content Wrapper */
         .content-wrapper {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 1400px;
-            height: calc(100vh - 200px);
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 40px;
         }
 
-        /* CEO Section */
-        .ceo-section {
-            display: flex;
-            align-items: center;
-            gap: 80px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(30px);
-            border-radius: 40px;
-            padding: 60px 80px;
-            box-shadow: 0 30px 90px rgba(0,0,0,0.5),
-                        0 0 100px rgba(255, 255, 255, 0.1),
-                        inset 0 0 100px rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.2);
+        /* Corner Accents */
+        .corner-accent {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            z-index: 5;
+        }
+
+        .top-left { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+        .bottom-right { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+        .top-right { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+
+        /* PAGE 1 - WELCOME */
+        .welcome-section {
+            text-align: center;
             animation: fadeInScale 1.5s ease-out 3s both;
         }
 
@@ -202,228 +343,407 @@
             }
         }
 
-        .photo-section {
-            flex-shrink: 0;
-        }
-
-        .photo-container {
-            width: 300px;
-            height: 300px;
-            position: relative;
-        }
-
-        .photo-glow {
-            position: absolute;
-            inset: -15px;
-            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
-            background-size: 300% 300%;
-            border-radius: 50%;
-            animation: glowRotate 6s ease infinite;
-            filter: blur(20px);
-            opacity: 0.8;
-        }
-
-        @keyframes glowRotate {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .photo-wrapper {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 6px solid rgba(255,255,255,0.4);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.6),
-                        inset 0 0 30px rgba(255,255,255,0.1);
+        .welcome-badge {
+            display: inline-block;
+            background-color: rgba(255, 51, 51, 0.2);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            color: #ff6b6b;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.2);
             cursor: pointer;
-            transition: transform 0.5s ease;
-            position: relative;
-            z-index: 1;
-            background: rgba(255,255,255,0.1);
         }
 
-        .photo-wrapper:hover {
-            transform: scale(1.05);
-        }
-
-        .photo-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .edit-photo-btn {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        .hero-title {
+            font-size: clamp(3rem, 7vw, 7rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            text-align: center;
             color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 28px;
+            text-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
+            letter-spacing: -2px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
-            transition: all 0.3s ease;
+        }
+
+        .hero-title .accent {
+            color: #ff3333;
+        }
+
+        .decoration-line {
+            width: 100px;
+            height: 4px;
+            background-color: #ff3333;
+            margin: 30px auto;
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .statement {
+            font-size: clamp(1rem, 1.4vw, 1.4rem);
+            color: #a0a0a0;
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.6;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .statement strong {
+            color: #ffd93d;
+            font-weight: 600;
+        }
+
+        /* PAGE 2 - PARTNERSHIP */
+        .partnership-content {
+            width: 100%;
+            max-width: 1400px;
+            padding: 60px 80px;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+
+        .page-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            color: #ffd93d;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .collaboration-stage {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
-        }
-
-        .edit-photo-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(118, 75, 162, 0.8);
-        }
-
-        .info-section {
-            flex: 1;
-        }
-
-        .welcome-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .ceo-name {
-            font-size: 4.5em;
-            font-weight: bold;
-            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            line-height: 1.1;
-        }
-
-        .ceo-name:hover {
-            transform: translateX(10px);
-        }
-
-        .ceo-title {
-            font-size: 2.2em;
-            color: #f093fb;
-            margin-bottom: 15px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .company-name-display {
-            font-size: 2em;
-            color: rgba(255,255,255,0.9);
-            font-weight: 500;
-            margin-top: 20px;
-        }
-
-        /* Partnership Page */
-        .partnership-content {
-            text-align: center;
-        }
-
-        .partnership-title {
-            font-size: 4em;
-            font-weight: bold;
-            background: linear-gradient(135deg, #fff 0%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            width: 100%;
+            position: relative;
             margin-bottom: 60px;
-            text-transform: uppercase;
-            letter-spacing: 6px;
+            flex-wrap: wrap;
+            gap: 40px;
         }
 
-        .partner-showcase {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(30px);
-            border-radius: 40px;
-            padding: 80px 120px;
-            border: 2px solid rgba(255,255,255,0.3);
-            box-shadow: 0 30px 90px rgba(0,0,0,0.5);
-            min-width: 600px;
+        .connector-line {
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%);
+            z-index: 1;
         }
 
-        .partner-label {
-            font-size: 1.8em;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+        .connector-active {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            max-width: 50%;
+            height: 4px;
+            background-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+            z-index: 2;
         }
 
-        .partner-name {
-            font-size: 3.5em;
-            font-weight: bold;
-            color: #fff;
+        .entity-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            position: relative;
+            width: 250px;
+        }
+
+        .logo-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 25px;
+            background-color: #1e1e24;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+            position: relative;
+            overflow: hidden;
         }
 
-        .partner-name:hover {
-            color: #f093fb;
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .logo-circle:hover {
             transform: scale(1.05);
         }
 
-        .partnership-icon {
-            font-size: 5em;
-            margin: 40px 0;
-            animation: bounce 2s ease-in-out infinite;
+        .logo-circle:hover::after {
+            content: '📷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            background: rgba(0,0,0,0.7);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        .logo-circle.left {
+            background-color: #ff3333;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 50px rgba(255, 51, 51, 0.4);
         }
 
-        /* Thank You Page */
-        .thankyou-content {
+        .logo-circle.right {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #a0aec0;
+        }
+
+        .entity-name {
+            font-size: clamp(1rem, 1.5vw, 1.5rem);
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .entity-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .center-connection {
+            width: 120px;
+            height: 120px;
+            background-color: #ffd93d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            margin: 0 60px;
+            box-shadow: 0 0 50px rgba(255, 217, 61, 0.4);
+            border: 6px solid #000;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .handshake-icon {
+            font-size: 3.5rem;
+            color: #000;
+        }
+
+        .key-points {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .point-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .point-card:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 51, 51, 0.2);
+        }
+
+        .point-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background-color: rgba(255, 51, 51, 0.1);
+            color: #ff3333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .point-content h3 {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .point-content p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* PAGE 3 - THANK YOU */
+        .thankyou-section {
             text-align: center;
         }
 
-        .thankyou-title {
-            font-size: 5em;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 40px;
-            text-shadow: 0 0 40px rgba(255,255,255,0.6);
-            animation: textGlow 3s ease-in-out infinite;
+        .thank-you-title {
+            font-size: clamp(4rem, 9vw, 9rem);
+            font-weight: 900;
+            line-height: 0.9;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 10;
+            cursor: pointer;
         }
 
-        @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 40px rgba(255,255,255,0.6); }
-            50% { text-shadow: 0 0 60px rgba(255,255,255,0.9); }
+        .subtitle-message {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(2rem, 2.8vw, 2.8rem);
+            color: #ff3333;
+            margin: 20px 0 40px 0;
+            font-weight: 400;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            cursor: pointer;
         }
 
-        .thankyou-message {
-            font-size: 2.5em;
-            color: rgba(255,255,255,0.95);
-            margin-bottom: 50px;
-            font-weight: 300;
+        .appreciation-text {
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.6;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+            cursor: pointer;
+            margin: 0 auto;
         }
 
-        .visit-message {
-            font-size: 2em;
-            color: #f093fb;
-            font-weight: 600;
-            margin-top: 30px;
+        .title-container {
+            position: relative;
+            display: inline-block;
         }
+
+        .sparkle-icon {
+            position: absolute;
+            color: #ffd93d;
+            filter: drop-shadow(0 0 10px rgba(255, 217, 61, 0.6));
+            opacity: 0.8;
+            z-index: 5;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        .s1 { top: -40px; right: -40px; font-size: 3rem; }
+        .s2 { bottom: -20px; left: -30px; font-size: 2rem; color: #ff3333; }
+        .s3 { top: 50%; left: -60px; font-size: 1.5rem; opacity: 0.5; }
+        .s4 { top: 20%; right: -50px; font-size: 1rem; opacity: 0.6; }
+
+        .icon-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .frame-border {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: calc(100% - 60px);
+            height: calc(100% - 60px);
+            top: 30px;
+            left: 30px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .corner-decoration {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffd93d;
+            z-index: 6;
+        }
+
+        .c-tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+        .c-tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+        .c-bl { bottom: 80px; left: 30px; border-right: none; border-top: none; }
+        .c-br { bottom: 80px; right: 30px; border-left: none; border-top: none; }
 
         /* Scrolling Banner */
         .scrolling-banner {
@@ -432,7 +752,7 @@
             left: 0;
             width: 100%;
             background: linear-gradient(135deg, #ff3333 0%, #ff6b6b 100%);
-            padding: 20px 0;
+            padding: 15px 0;
             overflow: hidden;
             box-shadow: 0 -10px 50px rgba(255, 51, 51, 0.5);
             z-index: 1000;
@@ -451,7 +771,7 @@
 
         .scrolling-text {
             color: white;
-            font-size: 1.8em;
+            font-size: clamp(1rem, 1.5vw, 1.8rem);
             font-weight: bold;
             padding: 0 60px;
             display: inline-block;
@@ -469,6 +789,7 @@
             color: inherit;
             width: 100%;
             text-align: inherit;
+            font-family: inherit;
         }
 
         .edit-input:focus {
@@ -476,10 +797,6 @@
             border-color: #f093fb;
             background: rgba(255,255,255,0.25);
             box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
-        }
-
-        input[type="file"] {
-            display: none;
         }
 
         /* Page Indicators */
@@ -509,34 +826,93 @@
             box-shadow: 0 0 20px rgba(255, 51, 51, 0.8);
         }
 
-        @media (max-width: 1200px) {
-            .ceo-section {
+        .footer-text {
+            position: absolute;
+            bottom: 70px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+            z-index: 20;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .collaboration-stage {
                 flex-direction: column;
-                padding: 40px;
-                gap: 40px;
+            }
+            
+            .connector-line,
+            .connector-active {
+                display: none;
+            }
+            
+            .center-connection {
+                margin: 20px 0;
+            }
+            
+            .key-points {
+                flex-direction: column;
+            }
+            
+            .s1, .s2, .s3, .s4 {
+                display: none;
             }
 
-            .ceo-name {
-                font-size: 3em;
-                text-align: center;
+            .logo-circle {
+                width: 180px;
+                height: 180px;
+                font-size: 4rem;
             }
+        }
 
-            .info-section {
-                text-align: center;
-            }
+        /* Video placeholder styles */
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2a0505 100%);
+        }
 
-            .company-logo-top {
-                font-size: 2em;
-            }
+        .video-icon {
+            font-size: 5rem;
+            color: #ff3333;
+            margin-bottom: 20px;
+        }
 
-            .partner-showcase {
-                padding: 60px 80px;
-                min-width: auto;
-            }
+        .video-text {
+            font-size: 1.8rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .video-subtext {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.6);
         }
     </style>
 </head>
 <body>
+    <!-- Video Introduction Overlay -->
+    <div class="video-overlay" id="videoOverlay">
+        <div class="video-container" id="videoContainer">
+            <video id="introVideo" controls autoplay>
+                <!-- CHANGE VIDEO PATH HERE -->
+                <source src="image/intro.mp4" type="video/mp4">
+                <source src="image/intro.webm" type="video/webm">
+                <source src="image/intro.mov" type="video/quicktime">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-controls" id="videoControls">
+                <button class="video-control-btn" onclick="skipVideo()">Skip Video</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Curtain Animation -->
     <div class="curtain-container">
         <div class="curtain curtain-left"></div>
@@ -546,61 +922,162 @@
     <!-- Main Wrapper -->
     <div class="main-wrapper">
         <!-- Company Logo (Always Visible) -->
-        <div class="company-logo-top" onclick="editCompanyLogo()">DRAFTOMECH</div>
+        <div class="company-logo-top" id="companyLogo" onclick="editElement('companyLogo', 'DRAFTOMECH')">DRAFTOMECH</div>
 
         <!-- Pages Container -->
         <div class="pages-container">
-            <!-- Page 1: CEO Welcome -->
-            <div class="page page-1 active">
-                <div class="bg-animation" id="bg1"></div>
+            <!-- Page 1: Welcome -->
+            <div class="page active">
+                <div class="bg-animation">
+                    <div class="bg-shape-1"></div>
+                    <div class="bg-shape-2"></div>
+                    <div class="bg-accent"></div>
+                </div>
+                <div class="corner-accent top-left"></div>
+                <div class="corner-accent bottom-right"></div>
+                
                 <div class="content-wrapper">
-                    <div class="ceo-section">
-                        <div class="photo-section">
-                            <div class="photo-container">
-                                <div class="photo-glow"></div>
-                                <div class="photo-wrapper" onclick="document.getElementById('photoInput').click()">
-                                    <img id="ceoPhoto" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad)' width='200' height='200'/%3E%3Cpath fill='%23fff' d='M100 90c13.8 0 25-11.2 25-25s-11.2-25-25-25-25 11.2-25 25 11.2 25 25 25zm0 12.5c-16.7 0-50 8.4-50 25v12.5h100v-12.5c0-16.6-33.3-25-50-25z'/%3E%3C/svg%3E" alt="CEO Photo">
-                                    <button></button>
-                                </div>
-                            </div>
-                            <input type="file" id="photoInput" accept="image/*">
+                    <div class="welcome-section">
+                        <div class="welcome-badge" id="welcomeBadge" onclick="editElement('welcomeBadge', 'WARMLY WELCOME')">
+                            <i class="fas fa-star"></i> WARMLY WELCOME
                         </div>
-
-                        <div class="info-section">
-                            <div class="welcome-badge">🎉 WARMLY WELCOME 🎉</div>
-                            <h1 class="ceo-name" id="ceoName" onclick="editName()">John Doe</h1>
-                            <p class="ceo-title" id="ceoTitle" onclick="editTitle()">Chief Executive Officer</p>
-                            <p class="company-name-display" id="companyDisplay">DRAFTOMECH</p>
-                        </div>
+                        
+                        <h1 class="hero-title" id="heroName" onclick="editElement('heroName', 'JOHN DOE')">
+                            JOHN <span class="accent">DOE</span>
+                        </h1>
+                        
+                        <div class="decoration-line"></div>
+                        
+                        <p class="subtitle" id="subtitle1" onclick="editElement('subtitle1', 'We are honored to have you here with us today')">
+                            We are honored to have you here with us today
+                        </p>
+                        
+                        <p class="statement" id="statement1" onclick="editElement('statement1', 'Your presence inspires excellence and innovation in our organization. Together, we look forward to achieving new milestones and creating lasting value.')">
+                            Your presence inspires <strong>excellence and innovation</strong> in our organization. Together, we look forward to achieving new milestones and creating lasting value.
+                        </p>
                     </div>
+                </div>
+                
+                <div class="footer-text" id="footer1" onclick="editElement('footer1', 'EXECUTIVE WELCOME SERIES • 2026')">
+                    EXECUTIVE WELCOME SERIES • 2026
                 </div>
             </div>
 
             <!-- Page 2: Partnership -->
-            <div class="page page-2">
-                <div class="bg-animation" id="bg2"></div>
+            <div class="page">
+                <div class="bg-animation">
+                    <div class="bg-shape-1"></div>
+                    <div class="bg-shape-2"></div>
+                    <div class="bg-accent"></div>
+                </div>
+                <div class="corner-accent top-right"></div>
+                <div class="corner-accent bottom-left"></div>
+                
                 <div class="content-wrapper">
                     <div class="partnership-content">
-                        <h2 class="partnership-title">Our Valued Partner</h2>
-                        <div class="partner-showcase">
-                            <div class="partner-label">In Partnership With</div>
-                            <div class="partnership-icon">🤝</div>
-                            <div class="partner-name" id="partnerName" onclick="editPartner()">Partner Company Name</div>
+                        <h1 class="page-title" id="partnerTitle" onclick="editElement('partnerTitle', 'Strategic Partnership')">Strategic Partnership</h1>
+                        <p class="page-subtitle" id="partnerSubtitle" onclick="editElement('partnerSubtitle', 'Collaboration in Action')">Collaboration in Action</p>
+                        
+                        <div class="collaboration-stage">
+                            <div class="connector-line"></div>
+                            <div class="connector-active"></div>
+                            
+                            <div class="entity-node">
+                                <div class="logo-circle left" onclick="uploadLogo('leftLogo')">
+                                    <i class="fas fa-cube" id="leftLogoIcon"></i>
+                                    <img id="leftLogo" style="display: none;">
+                                </div>
+                                <p class="entity-name" id="companyName" onclick="editElement('companyName', 'DRAFTOMECH')">DRAFTOMECH</p>
+                                <p class="entity-label" id="companyLabel" onclick="editElement('companyLabel', 'Our Organization')">Our Organization</p>
+                            </div>
+                            
+                            <div class="center-connection">
+                                <i class="fas fa-handshake handshake-icon"></i>
+                            </div>
+                            
+                            <div class="entity-node">
+                                <div class="logo-circle right" onclick="uploadLogo('rightLogo')">
+                                    <i class="fas fa-building" id="rightLogoIcon"></i>
+                                    <img id="rightLogo" style="display: none;">
+                                </div>
+                                <p class="entity-name" id="partnerName" onclick="editElement('partnerName', 'PARTNER')">PARTNER</p>
+                                <p class="entity-label" id="partnerLabel" onclick="editElement('partnerLabel', 'Strategic Ally')">Strategic Ally</p>
+                            </div>
+                        </div>
+                        
+                        <div class="key-points">
+                            <div class="point-card">
+                                <div class="point-icon"><i class="fas fa-eye"></i></div>
+                                <div class="point-content">
+                                    <h3 id="point1Title" onclick="editElement('point1Title', 'Align Vision')">Align Vision</h3>
+                                    <p id="point1Text" onclick="editElement('point1Text', 'Synchronizing our goals for a unified path forward.')">Synchronizing our goals for a unified path forward.</p>
+                                </div>
+                            </div>
+                            <div class="point-card">
+                                <div class="point-icon"><i class="fas fa-rocket"></i></div>
+                                <div class="point-content">
+                                    <h3 id="point2Title" onclick="editElement('point2Title', 'Explore Opportunities')">Explore Opportunities</h3>
+                                    <p id="point2Text" onclick="editElement('point2Text', 'Identifying new avenues for mutual growth and innovation.')">Identifying new avenues for mutual growth and innovation.</p>
+                                </div>
+                            </div>
+                            <div class="point-card">
+                                <div class="point-icon"><i class="fas fa-gem"></i></div>
+                                <div class="point-content">
+                                    <h3 id="point3Title" onclick="editElement('point3Title', 'Build Lasting Value')">Build Lasting Value</h3>
+                                    <p id="point3Text" onclick="editElement('point3Text', 'Creating sustainable impact through shared expertise.')">Creating sustainable impact through shared expertise.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                
+                <div class="footer-text" id="footer2" onclick="editElement('footer2', 'CONFIDENTIAL • STRATEGIC PARTNERSHIP OVERVIEW')">
+                    CONFIDENTIAL • STRATEGIC PARTNERSHIP OVERVIEW
                 </div>
             </div>
 
             <!-- Page 3: Thank You -->
-            <div class="page page-3">
-                <div class="bg-animation" id="bg3"></div>
+            <div class="page">
+                <div class="bg-animation">
+                    <div class="bg-shape-1"></div>
+                    <div class="bg-shape-2"></div>
+                    <div class="bg-accent"></div>
+                </div>
+                <div class="frame-border"></div>
+                <div class="corner-decoration c-tl"></div>
+                <div class="corner-decoration c-tr"></div>
+                <div class="corner-decoration c-bl"></div>
+                <div class="corner-decoration c-br"></div>
+                
                 <div class="content-wrapper">
-                    <div class="thankyou-content">
-                        <h1 class="thankyou-title">THANK YOU!</h1>
-                        <p class="thankyou-message">For Visiting Our Office</p>
-                        <div class="partnership-icon">✨</div>
-                        <p class="thankyou-message">We appreciate your presence</p>
+                    <div class="thankyou-section">
+                        <div class="icon-badge">
+                            <i class="fas fa-check" style="color: white; font-size: 1.5rem;"></i>
+                        </div>
+                        
+                        <div class="title-container">
+                            <h1 class="thank-you-title" id="thankYouTitle" onclick="editElement('thankYouTitle', 'THANK YOU')">THANK YOU</h1>
+                            <i class="fas fa-star sparkle-icon s1"></i>
+                            <i class="fas fa-certificate sparkle-icon s2"></i>
+                            <i class="fas fa-star sparkle-icon s3"></i>
+                            <i class="fas fa-circle sparkle-icon s4"></i>
+                        </div>
+                        
+                        <h2 class="subtitle-message" id="thankYouSubtitle" onclick="editElement('thankYouSubtitle', 'For Visiting Our Office')">For Visiting Our Office</h2>
+                        
+                        <div class="decoration-line" style="background-color: #ff3333;"></div>
+                        
+                        <p class="appreciation-text" id="appreciationText" onclick="editElement('appreciationText', 'We appreciate your valuable time and presence. It was a pleasure to discuss future opportunities with you.')">
+                            We appreciate your valuable time and presence.<br/>
+                            It was a pleasure to discuss <strong>future opportunities</strong> with you.
+                        </p>
                     </div>
+                </div>
+                
+                <div style="position: absolute; bottom: 70px; width: 100%; text-align: center; z-index: 20; display: flex; justify-content: center; gap: 30px;">
+                    <p style="color: rgba(255,255,255,0.3); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer;" id="footer3a" onclick="editElement('footer3a', 'Safe Travels')">Safe Travels</p>
+                    <p style="color: rgba(255,255,255,0.1);">|</p>
+                    <p style="color: rgba(255,255,255,0.3); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer;" id="footer3b" onclick="editElement('footer3b', 'See You Soon')">See You Soon</p>
                 </div>
             </div>
         </div>
@@ -616,21 +1093,64 @@
         <div class="scrolling-banner">
             <div class="scrolling-content" id="scrollingContent">
                 <span class="scrolling-text">✨ WARMLY WELCOME JOHN DOE</span>
-                <span class="scrolling-text">🌟 CEO OF DRAFTOMECH</span>
+                <span class="scrolling-text">🌟 DRAFTOMECH</span>
                 <span class="scrolling-text">✨ WARMLY WELCOME JOHN DOE</span>
-                <span class="scrolling-text">🌟 CEO OF DRAFTOMECH</span>
+                <span class="scrolling-text">🌟 DRAFTOMECH</span>
             </div>
         </div>
     </div>
+
+    <!-- Hidden file inputs for logo uploads -->
+    <input type="file" id="logoUploadInput" accept="image/*" style="display: none;">
 
     <script>
         let currentPage = 0;
         const pages = document.querySelectorAll('.page');
         const indicators = document.querySelectorAll('.indicator');
         let autoRotate;
+        let presentationStarted = false;
 
-        // Curtain Opening
-        window.addEventListener('load', () => {
+        // Video handling and skip function
+        const introVideo = document.getElementById('introVideo');
+        const videoOverlay = document.getElementById('videoOverlay');
+
+        // Check if video exists and handle accordingly
+        introVideo.addEventListener('loadeddata', function() {
+            // Video loaded successfully, play it
+            introVideo.play().catch(err => {
+                // If autoplay fails, show controls
+                console.log('Autoplay prevented');
+            });
+        });
+
+        introVideo.addEventListener('error', function() {
+            // Video not found, start presentation directly
+            console.log('Video not found, starting presentation');
+            startPresentation();
+        });
+
+        // When video ends, start presentation
+        introVideo.addEventListener('ended', function() {
+            startPresentation();
+        });
+
+        function skipVideo() {
+            startPresentation();
+        }
+
+        function startPresentation() {
+            if (presentationStarted) return;
+            presentationStarted = true;
+            
+            videoOverlay.classList.add('hidden');
+            
+            setTimeout(() => {
+                videoOverlay.style.display = 'none';
+                openCurtains();
+            }, 1000);
+        }
+
+        function openCurtains() {
             setTimeout(() => {
                 document.querySelector('.curtain-left').classList.add('open');
                 document.querySelector('.curtain-right').classList.add('open');
@@ -640,23 +1160,25 @@
             setTimeout(() => {
                 startAutoRotate();
             }, 4000);
-        });
+        }
 
-        // Create particles for all backgrounds
-        ['bg1', 'bg2', 'bg3'].forEach(bgId => {
-            const bg = document.getElementById(bgId);
-            for (let i = 0; i < 25; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const size = Math.random() * 50 + 20;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                bg.appendChild(particle);
-            }
+        // Initialize on load
+        window.addEventListener('load', () => {
+            // Create particles for all backgrounds
+            document.querySelectorAll('.bg-animation').forEach(bg => {
+                for (let i = 0; i < 25; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 50 + 20;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 5 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                    bg.appendChild(particle);
+                }
+            });
         });
 
         function goToPage(index) {
@@ -674,7 +1196,7 @@
         }
 
         function startAutoRotate() {
-            autoRotate = setInterval(nextPage, 6000);
+            autoRotate = setInterval(nextPage, 12000);
         }
 
         function resetAutoRotate() {
@@ -682,36 +1204,47 @@
             startAutoRotate();
         }
 
-        // Photo Upload
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('ceoPhoto').src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Edit Functions
-        function createInput(element, fontSize, defaultValue, updateFunction) {
-            const current = element.textContent;
+        // Edit Function
+        function editElement(elementId, defaultValue) {
+            const el = document.getElementById(elementId);
+            const currentText = el.textContent.trim();
+            
             const input = document.createElement('input');
             input.type = 'text';
-            input.value = current;
+            input.value = currentText;
             input.className = 'edit-input';
-            input.style.fontSize = fontSize;
-            element.replaceWith(input);
+            input.style.fontSize = window.getComputedStyle(el).fontSize;
+            input.style.fontFamily = window.getComputedStyle(el).fontFamily;
+            input.style.fontWeight = window.getComputedStyle(el).fontWeight;
+            input.style.textAlign = window.getComputedStyle(el).textAlign;
+            
+            const parent = el.parentNode;
+            const originalDisplay = el.style.display;
+            el.style.display = 'none';
+            parent.insertBefore(input, el);
+            
             input.focus();
             input.select();
             
             const finishEdit = () => {
-                const newVal = input.value || defaultValue;
-                const newElement = element.cloneNode(false);
-                newElement.textContent = newVal;
-                input.replaceWith(newElement);
-                if (updateFunction) updateFunction(newVal);
+                const newValue = input.value.trim() || defaultValue;
+                el.textContent = newValue;
+                el.style.display = originalDisplay;
+                input.remove();
+                
+                // Update scrolling banner if name or company changed
+                if (elementId === 'heroName' || elementId === 'companyLogo') {
+                    updateScrollingBanner();
+                }
+                
+                // Update hero title accent
+                if (elementId === 'heroName') {
+                    const parts = newValue.split(' ');
+                    if (parts.length > 1) {
+                        const lastName = parts.pop();
+                        el.innerHTML = parts.join(' ') + ' <span class="accent">' + lastName + '</span>';
+                    }
+                }
             };
             
             input.addEventListener('blur', finishEdit);
@@ -720,36 +1253,58 @@
             });
         }
 
-        function editName() {
-            const el = document.getElementById('ceoName');
-            createInput(el, '4.5em', 'John Doe', updateScrolling);
-        }
-
-        function editTitle() {
-            const el = document.getElementById('ceoTitle');
-            createInput(el, '2.2em', 'Chief Executive Officer');
-        }
-
-        function editCompanyLogo() {
-            const el = document.querySelector('.company-logo-top');
-            createInput(el, '3em', 'DRAFTOMECH', (newVal) => {
-                document.getElementById('companyDisplay').textContent = newVal;
-                updateScrolling();
-            });
-        }
-
-        function editPartner() {
-            const el = document.getElementById('partnerName');
-            createInput(el, '3.5em', 'Partner Company Name');
-        }
-
-        function updateScrolling() {
-            const name = document.getElementById('ceoName').textContent.toUpperCase();
-            const company = document.querySelector('.company-logo-top').textContent;
-            const content = `<span class="scrolling-text">✨ WARMLY WELCOME ${name}</span>
-                           <span class="scrolling-text">🌟 CEO OF ${company}</span>`.repeat(2);
+        function updateScrollingBanner() {
+            const name = document.getElementById('heroName').textContent.toUpperCase();
+            const company = document.getElementById('companyLogo').textContent;
+            const content = `
+                <span class="scrolling-text">✨ WARMLY WELCOME ${name}</span>
+                <span class="scrolling-text">🌟 ${company}</span>
+            `.repeat(2);
             document.getElementById('scrollingContent').innerHTML = content;
         }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const prev = (currentPage - 1 + pages.length) % pages.length;
+                goToPage(prev);
+            }
+        });
+
+        // Logo Upload Function
+        let currentLogoTarget = null;
+
+        function uploadLogo(logoId) {
+            currentLogoTarget = logoId;
+            const input = document.getElementById('logoUploadInput');
+            input.click();
+        }
+
+        document.getElementById('logoUploadInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && currentLogoTarget) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = document.getElementById(currentLogoTarget);
+                    const icon = document.getElementById(currentLogoTarget + 'Icon');
+                    
+                    img.src = event.target.result;
+                    img.style.display = 'block';
+                    if (icon) {
+                        icon.style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+            // Reset file input
+            e.target.value = '';
+        });
     </script>
 </body>
 </html>
