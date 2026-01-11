@@ -484,16 +484,17 @@
         }
 
         .logo-circle {
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3.5rem;
+            font-size: 4rem;
             color: white;
             margin-bottom: 25px;
-            background-color: #1e1e24;
+            background-color: rgba(30, 30, 36, 0.3);
+            backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: transform 0.3s ease;
@@ -505,8 +506,10 @@
         .logo-circle img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 50%;
+            padding: 15px;
+            background: transparent;
         }
 
         .logo-circle:hover {
@@ -514,31 +517,37 @@
         }
 
         .logo-circle:hover::after {
-            content: '📷';
+            content: '📷 Upload Logo';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2rem;
-            background: rgba(0,0,0,0.7);
+            font-size: 1rem;
+            background: rgba(0,0,0,0.85);
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+            line-height: 1.4;
         }
 
         .logo-circle.left {
-            background-color: #ff3333;
-            border-color: #ff6b6b;
-            box-shadow: 0 0 50px rgba(255, 51, 51, 0.4);
+            background: transparent;
+            border: 3px solid #ff3333;
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.3), 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .logo-circle.right {
-            background-color: #2d3748;
-            border-color: #4a5568;
+            background: transparent;
+            border: 3px solid #4a5568;
             color: #a0aec0;
+            box-shadow: 0 0 30px rgba(74, 85, 104, 0.3), 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .entity-name {
@@ -860,9 +869,9 @@
             }
 
             .logo-circle {
-                width: 180px;
-                height: 180px;
-                font-size: 4rem;
+                width: 140px;
+                height: 140px;
+                font-size: 3.5rem;
             }
         }
 
@@ -1113,34 +1122,57 @@
         // Video handling and skip function
         const introVideo = document.getElementById('introVideo');
         const videoOverlay = document.getElementById('videoOverlay');
+        let isVideoPlaying = false;
 
         // Check if video exists and handle accordingly
         introVideo.addEventListener('loadeddata', function() {
+            console.log('Video loaded successfully');
             // Video loaded successfully, play it
             introVideo.play().catch(err => {
                 // If autoplay fails, show controls
-                console.log('Autoplay prevented');
+                console.log('Autoplay prevented:', err);
             });
         });
 
-        introVideo.addEventListener('error', function() {
+        introVideo.addEventListener('play', function() {
+            isVideoPlaying = true;
+            console.log('Video started playing');
+        });
+
+        introVideo.addEventListener('pause', function() {
+            console.log('Video paused');
+        });
+
+        introVideo.addEventListener('error', function(e) {
             // Video not found, start presentation directly
-            console.log('Video not found, starting presentation');
+            console.log('Video error:', e);
             startPresentation();
         });
 
         // When video ends, start presentation
         introVideo.addEventListener('ended', function() {
+            console.log('Video ended, starting presentation');
+            isVideoPlaying = false;
             startPresentation();
         });
 
         function skipVideo() {
+            console.log('Skip video clicked');
+            if (introVideo) {
+                introVideo.pause();
+            }
+            isVideoPlaying = false;
             startPresentation();
         }
 
         function startPresentation() {
-            if (presentationStarted) return;
+            console.log('startPresentation called, presentationStarted:', presentationStarted);
+            if (presentationStarted && !isVideoPlaying) {
+                // Already in presentation mode, don't restart
+                return;
+            }
             presentationStarted = true;
+            isVideoPlaying = false;
             
             videoOverlay.classList.add('hidden');
             
@@ -1192,7 +1224,70 @@
 
         function nextPage() {
             const next = (currentPage + 1) % pages.length;
-            goToPage(next);
+            
+            // If we've completed all pages, restart from video
+            if (currentPage === pages.length - 1) {
+                // We're on the last page (Thank You), go back to video
+                showVideoAndRestart();
+            } else {
+                goToPage(next);
+            }
+        }
+
+        function showVideoAndRestart() {
+            console.log('showVideoAndRestart called');
+            
+            // Stop auto-rotation
+            clearInterval(autoRotate);
+            
+            // Close curtains
+            document.querySelector('.curtain-left').classList.remove('open');
+            document.querySelector('.curtain-right').classList.remove('open');
+            
+            // Go back to first page immediately (behind curtains)
+            pages[currentPage].classList.remove('active');
+            indicators[currentPage].classList.remove('active');
+            currentPage = 0;
+            pages[currentPage].classList.add('active');
+            indicators[currentPage].classList.add('active');
+            
+            // Show video overlay
+            videoOverlay.style.display = 'flex';
+            setTimeout(() => {
+                videoOverlay.classList.remove('hidden');
+            }, 100);
+            
+            // Reset and play video
+            if (introVideo && !introVideo.error) {
+                introVideo.currentTime = 0;
+                console.log('Attempting to play video from start');
+                
+                const playPromise = introVideo.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Video playing successfully');
+                        isVideoPlaying = true;
+                        presentationStarted = false;
+                    }).catch(err => {
+                        console.log('Video play failed:', err);
+                        // If can't play video, just restart presentation after delay
+                        isVideoPlaying = false;
+                        presentationStarted = false;
+                        setTimeout(() => {
+                            startPresentation();
+                        }, 2000);
+                    });
+                }
+            } else {
+                console.log('No video available, restarting presentation');
+                // No video, just restart presentation after delay
+                isVideoPlaying = false;
+                presentationStarted = false;
+                setTimeout(() => {
+                    startPresentation();
+                }, 2000);
+            }
         }
 
         function startAutoRotate() {
